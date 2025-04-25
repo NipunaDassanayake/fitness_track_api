@@ -1,4 +1,4 @@
-//package com.fit_track_api.fit_track_api.model;
+//package com.fitness_track_api.fitness_track.model;
 //import jakarta.persistence.*;
 //import lombok.Data;
 //import java.time.LocalDateTime;

@@ -1,19 +1,19 @@
-package com.fit_track_api.fit_track_api.service.impl;
+package com.fitness_track_api.fitness_track.service.impl;
 
-import com.fit_track_api.fit_track_api.controller.dto.request.CreateQuestionsDTO;
-import com.fit_track_api.fit_track_api.controller.dto.request.QuestionDTO;
-import com.fit_track_api.fit_track_api.controller.dto.request.SubmitAnswerDTO;
-import com.fit_track_api.fit_track_api.controller.dto.request.SubmitBulkAnswersDTO;
-import com.fit_track_api.fit_track_api.exceptions.ResourceNotFoundException;
-import com.fit_track_api.fit_track_api.model.Questionnaire;
-import com.fit_track_api.fit_track_api.model.User;
-import com.fit_track_api.fit_track_api.model.UserAnswer;
-import com.fit_track_api.fit_track_api.model.WorkoutPlan;
-import com.fit_track_api.fit_track_api.repository.QuestionnaireRepository;
-import com.fit_track_api.fit_track_api.repository.UserAnswerRepository;
-import com.fit_track_api.fit_track_api.repository.UserRepository;
-import com.fit_track_api.fit_track_api.repository.WorkoutPlanRepository;
-import com.fit_track_api.fit_track_api.service.QuestionnaireService;
+import com.fitness_track_api.fitness_track.controller.dto.request.CreateQuestionsDTO;
+import com.fitness_track_api.fitness_track.controller.dto.request.QuestionDTO;
+import com.fitness_track_api.fitness_track.controller.dto.request.SubmitAnswerDTO;
+import com.fitness_track_api.fitness_track.controller.dto.request.SubmitBulkAnswersDTO;
+import com.fitness_track_api.fitness_track.exceptions.ResourceNotFoundException;
+import com.fitness_track_api.fitness_track.model.Questionnaire;
+import com.fitness_track_api.fitness_track.model.User;
+import com.fitness_track_api.fitness_track.model.UserAnswer;
+import com.fitness_track_api.fitness_track.model.WorkoutPlan;
+import com.fitness_track_api.fitness_track.repository.QuestionnaireRepository;
+import com.fitness_track_api.fitness_track.repository.UserAnswerRepository;
+import com.fitness_track_api.fitness_track.repository.UserRepository;
+import com.fitness_track_api.fitness_track.repository.WorkoutPlanRepository;
+import com.fitness_track_api.fitness_track.service.QuestionnaireService;
 import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Service;
 

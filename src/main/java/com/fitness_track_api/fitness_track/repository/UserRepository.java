@@ -1,5 +1,5 @@
 package com.fitness_track_api.fitness_track.repository;
-import com.fit_track_api.fit_track_api.model.User;
+import com.fitness_track_api.fitness_track.model.User;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 

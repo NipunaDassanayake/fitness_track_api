@@ -1,7 +1,7 @@
 package com.fitness_track_api.fitness_track.repository;
 
-import com.fit_track_api.fit_track_api.model.Exercise;
-import com.fit_track_api.fit_track_api.model.WorkoutPlan;
+import com.fitness_track_api.fitness_track.model.Exercise;
+import com.fitness_track_api.fitness_track.model.WorkoutPlan;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 

@@ -1,7 +1,7 @@
 package com.fitness_track_api.fitness_track.repository;
 
-import com.fit_track_api.fit_track_api.model.Comment;
-import com.fit_track_api.fit_track_api.model.WorkoutPost;
+import com.fitness_track_api.fitness_track.model.Comment;
+import com.fitness_track_api.fitness_track.model.WorkoutPost;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 

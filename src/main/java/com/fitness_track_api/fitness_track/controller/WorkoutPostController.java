@@ -1,11 +1,11 @@
-package com.fit_track_api.fit_track_api.controller;
+package com.fitness_track_api.fitness_track.controller;
 
-import com.fit_track_api.fit_track_api.controller.dto.request.CreatePostRequestDTO;
-import com.fit_track_api.fit_track_api.controller.dto.request.UpdatePostRequestDTO;
-import com.fit_track_api.fit_track_api.controller.dto.response.GetPostByIdResponseDTO;
-import com.fit_track_api.fit_track_api.controller.dto.response.GetPostByUserResponseDTO;
-import com.fit_track_api.fit_track_api.model.WorkoutPost;
-import com.fit_track_api.fit_track_api.service.WorkoutPostService;
+import com.fitness_track_api.fitness_track.controller.dto.request.CreatePostRequestDTO;
+import com.fitness_track_api.fitness_track.controller.dto.request.UpdatePostRequestDTO;
+import com.fitness_track_api.fitness_track.controller.dto.response.GetPostByIdResponseDTO;
+import com.fitness_track_api.fitness_track.controller.dto.response.GetPostByUserResponseDTO;
+import com.fitness_track_api.fitness_track.model.WorkoutPost;
+import com.fitness_track_api.fitness_track.service.WorkoutPostService;
 import lombok.AllArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
