@@ -1,6 +1,6 @@
-package com.fit_track_api.fit_track_api.controller.dto.response;
+package com.fitness_track_api.fitness_track.controller.dto.response;
 
-import com.fit_track_api.fit_track_api.model.User;
+import com.fitness_track_api.fitness_track.model.User;
 import lombok.Data;
 
 import java.util.List;

@@ -1,12 +1,12 @@
-package com.fit_track_api.fit_track_api.controller;
+package com.fitness_track_api.fitness_track.controller;
 
-import com.fit_track_api.fit_track_api.controller.dto.request.CreateQuestionsDTO;
-import com.fit_track_api.fit_track_api.controller.dto.request.QuestionDTO;
-import com.fit_track_api.fit_track_api.controller.dto.request.SubmitAnswerDTO;
-import com.fit_track_api.fit_track_api.controller.dto.request.SubmitBulkAnswersDTO;
-import com.fit_track_api.fit_track_api.model.Questionnaire;
-import com.fit_track_api.fit_track_api.model.UserAnswer;
-import com.fit_track_api.fit_track_api.service.QuestionnaireService;
+import com.fitness_track_api.fitness_track.controller.dto.request.CreateQuestionsDTO;
+import com.fitness_track_api.fitness_track.controller.dto.request.QuestionDTO;
+import com.fitness_track_api.fitness_track.controller.dto.request.SubmitAnswerDTO;
+import com.fitness_track_api.fitness_track.controller.dto.request.SubmitBulkAnswersDTO;
+import com.fitness_track_api.fitness_track.model.Questionnaire;
+import com.fitness_track_api.fitness_track.model.UserAnswer;
+import com.fitness_track_api.fitness_track.service.QuestionnaireService;
 import lombok.AllArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;

@@ -1,4 +1,4 @@
-package com.fit_track_api.fit_track_api.controller.dto.request;
+package com.fitness_track_api.fitness_track.controller.dto.request;
 
 import lombok.AllArgsConstructor;
 import lombok.Data;

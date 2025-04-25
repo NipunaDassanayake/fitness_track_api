@@ -1,10 +1,10 @@
 package com.fitness_track_api.fitness_track.service;
 
-import com.fit_track_api.fit_track_api.controller.dto.request.CreateUserRequestDTO;
-import com.fit_track_api.fit_track_api.controller.dto.request.UserUpdateRequestDTO;
-import com.fit_track_api.fit_track_api.controller.dto.response.GetAllUsersResponseDTO;
-import com.fit_track_api.fit_track_api.controller.dto.response.GetUserByIdResponseDTO;
-import com.fit_track_api.fit_track_api.model.User;
+import com.fitness_track_api.fitness_track.controller.dto.request.CreateUserRequestDTO;
+import com.fitness_track_api.fitness_track.controller.dto.request.UserUpdateRequestDTO;
+import com.fitness_track_api.fitness_track.controller.dto.response.GetAllUsersResponseDTO;
+import com.fitness_track_api.fitness_track.controller.dto.response.GetUserByIdResponseDTO;
+import com.fitness_track_api.fitness_track.model.User;
 
 import java.util.List;
 

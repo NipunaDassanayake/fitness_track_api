@@ -1,6 +1,6 @@
-package com.fit_track_api.fit_track_api.controller.dto.request;
+package com.fitness_track_api.fitness_track.controller.dto.request;
 
-import com.fit_track_api.fit_track_api.model.User;
+import com.fitness_track_api.fitness_track.model.User;
 import jakarta.persistence.ElementCollection;
 import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToOne;

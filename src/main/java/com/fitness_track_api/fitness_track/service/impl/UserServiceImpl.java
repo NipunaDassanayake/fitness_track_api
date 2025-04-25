@@ -1,14 +1,14 @@
 package com.fitness_track_api.fitness_track.service.impl;
 
 import com.cloudinary.Cloudinary;
-import com.fit_track_api.fit_track_api.controller.dto.request.CreateUserRequestDTO;
-import com.fit_track_api.fit_track_api.controller.dto.request.UserUpdateRequestDTO;
-import com.fit_track_api.fit_track_api.controller.dto.response.GetAllUsersResponseDTO;
-import com.fit_track_api.fit_track_api.controller.dto.response.GetUserByIdResponseDTO;
-import com.fit_track_api.fit_track_api.exceptions.ResourceNotFoundException;
-import com.fit_track_api.fit_track_api.model.User;
-import com.fit_track_api.fit_track_api.repository.UserRepository;
-import com.fit_track_api.fit_track_api.service.UserService;
+import com.fitness_track_api.fitness_track.controller.dto.request.CreateUserRequestDTO;
+import com.fitness_track_api.fitness_track.controller.dto.request.UserUpdateRequestDTO;
+import com.fitness_track_api.fitness_track.controller.dto.response.GetAllUsersResponseDTO;
+import com.fitness_track_api.fitness_track.controller.dto.response.GetUserByIdResponseDTO;
+import com.fitness_track_api.fitness_track.exceptions.ResourceNotFoundException;
+import com.fitness_track_api.fitness_track.model.User;
+import com.fitness_track_api.fitness_track.repository.UserRepository;
+import com.fitness_track_api.fitness_track.service.UserService;
 import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Service;
 
