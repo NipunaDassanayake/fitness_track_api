@@ -29,6 +29,26 @@ public class UserController {
        return ResponseEntity.ok("User Created Successfully");
     }
 
+    @PostMapping
+    public ResponseEntity<String> registerUser(@RequestBody CreateUserRequestDTO createUserRequestDTO){
+        try {
+            userService.registerUser(createUserRequestDTO);
+        } catch (RuntimeException e) {
+            return ResponseEntity.badRequest().body(e.getMessage());
+        }
+
+        return ResponseEntity.ok("User Created Successfully");
+    }
+    @PostMapping("/login")
+    public ResponseEntity<Object> loginUserLocal(@RequestBody LoginRequestDTO loginRequestDTO) {
+        try {
+            User user = userService.loginUserLocal(loginRequestDTO);
+            return ResponseEntity.ok(user);
+        } catch (RuntimeException e) {
+            // Return a detailed error message
+            return ResponseEntity.badRequest().body(e.getMessage());
+        }
+    }
     @PutMapping("/{id}")
     public ResponseEntity<String> updateUser(@PathVariable Long id, @ModelAttribute UserUpdateRequestDTO userUpdateRequestDTO) {
         userService.updateUser(id, userUpdateRequestDTO);
