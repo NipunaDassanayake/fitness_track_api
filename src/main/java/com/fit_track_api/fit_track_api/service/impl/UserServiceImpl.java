@@ -127,7 +127,27 @@ public class UserServiceImpl implements UserService {
                 }).toList();
         return usersResponseDTOS;
     }
+    @Override
+    public User loginRegisterByGoogleOAuth2(OAuth2AuthenticationToken auth2AuthenticationToken) {
+        OAuth2User oAuth2User = auth2AuthenticationToken.getPrincipal();
+        String email = oAuth2User.getAttribute("email");
+        String name = oAuth2User.getAttribute("name");
 
+        log.info("USER Email FROM GOOGLE IS {}", email);
+        log.info("USER NAME FROM GOOGLE IS {}", name);
+
+        User user = userRepository.findByEmail(email).orElse(null); // First check if the email exists
+        if (user == null) {
+            // If no user exists with this email, create a new one
+            user = new User();
+            user.setEmail(email);
+            user.setUsername(name);
+            user.setAuthProvider(AuthProvider.GOOGLE);
+            userRepository.save(user);
+        }
+        System.out.println("User created/found: Email = " + user.getEmail() + ", Username = " + user.getUsername() + ", AuthProvider = " + user.getAuthProvider());
+        return user;
+    }
     @Override
     public void followUser(Long followerId, Long followedId) {
         if (followerId.equals(followedId)) {
