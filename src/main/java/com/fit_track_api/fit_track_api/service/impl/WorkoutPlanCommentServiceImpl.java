@@ -39,6 +39,23 @@ public class WorkoutPlanCommentServiceImpl implements WorkoutPlanCommentService 
 
         return workoutPlanCommentRepository.save(comment);
     }
+    @Override
+    public WorkoutPlanComment updateComment(Long commentId, UpdateCommentRequestDTO dto) {
+        WorkoutPlanComment comment = workoutPlanCommentRepository.findById(commentId)
+                .orElseThrow(() -> new RuntimeException("Comment not found with id: " + commentId));
+        comment.setContent(dto.getContent());
+        return workoutPlanCommentRepository.save(comment);
+    }
+
+
+    @Override
+    public void deleteComment(Long commentId) {
+        if (!workoutPlanCommentRepository.existsById(commentId)) {
+            throw new RuntimeException("Comment not found with id: " + commentId);
+        }
+        workoutPlanCommentRepository.deleteById(commentId);
+    }
+
 
 
 }
