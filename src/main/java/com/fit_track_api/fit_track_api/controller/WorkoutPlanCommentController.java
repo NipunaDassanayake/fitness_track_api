@@ -27,5 +27,19 @@ public class WorkoutPlanCommentController {
         return ResponseEntity.ok(comment);
     }
 
+    @PutMapping("/comments/{commentId}")
+    public ResponseEntity<String> updateComment(
+            @PathVariable Long commentId,
+            @RequestBody UpdateCommentRequestDTO updateDto) {
+        WorkoutPlanComment updatedComment = commentService.updateComment(commentId, updateDto);
+        return ResponseEntity.ok("Successfully updated Comment");
+    }
+
+    @DeleteMapping("/comments/{commentId}")
+    public ResponseEntity<Void> deleteComment(@PathVariable Long commentId) {
+        commentService.deleteComment(commentId);
+        return ResponseEntity.noContent().build();
+    }
+
 
 }
