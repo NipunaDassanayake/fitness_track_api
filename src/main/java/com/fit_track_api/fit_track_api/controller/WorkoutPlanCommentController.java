@@ -41,5 +41,10 @@ public class WorkoutPlanCommentController {
         return ResponseEntity.noContent().build();
     }
 
-
+    @GetMapping("/{workoutPlanId}/comments")
+    public ResponseEntity<List<GetWorkoutPlanCommentResponseDTO>> getCommentsByWorkoutPlan(
+            @PathVariable Long workoutPlanId) {
+        List<GetWorkoutPlanCommentResponseDTO> comments = commentService.getCommentsByWorkoutPlan(workoutPlanId);
+        return ResponseEntity.ok(comments);
+    }
 }
