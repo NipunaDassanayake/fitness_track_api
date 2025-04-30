@@ -56,6 +56,19 @@ public class WorkoutPlanCommentServiceImpl implements WorkoutPlanCommentService 
         workoutPlanCommentRepository.deleteById(commentId);
     }
 
-
+    @Override
+    public List<GetWorkoutPlanCommentResponseDTO> getCommentsByWorkoutPlan(Long workoutPlanId) {
+        List<WorkoutPlanComment> comments = workoutPlanCommentRepository.findByWorkoutPlanId(workoutPlanId);
+        return comments.stream().map(comment -> {
+            GetWorkoutPlanCommentResponseDTO dto = new GetWorkoutPlanCommentResponseDTO();
+            dto.setId(comment.getId());
+            dto.setContent(comment.getContent());
+            dto.setCreatedAt(comment.getCreatedAt());
+            dto.setUserId(comment.getUser().getId());
+            dto.setUsername(comment.getUser().getUsername());
+            dto.setWorkOutPlanId(comment.getWorkoutPlan().getId());
+            return dto;
+        }).collect(Collectors.toList());
+    }
 
 }
