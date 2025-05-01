@@ -98,6 +98,14 @@ public class WorkoutPostServiceImpl implements WorkoutPostService {
             throw new RuntimeException("Failed to update post with ID: " + id, e);
         }
 
+        @Override
+        public void deletePost(Long id) {
+            if (!workoutPostRepository.existsById(id)) {
+                throw new ResourceNotFoundException("Post not found");
+            }
+            workoutPostRepository.deleteById(id);
+        }
+
 
     }
 
