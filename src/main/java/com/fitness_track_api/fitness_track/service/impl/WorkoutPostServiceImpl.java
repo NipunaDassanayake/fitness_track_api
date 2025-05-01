@@ -67,5 +67,38 @@ public class WorkoutPostServiceImpl implements WorkoutPostService {
         return workoutPostRepository.save(post);
     }
 
+    @Override
+    public void updatePost(Long id, UpdatePostRequestDTO updatePostRequestDTO) {
+        try {
+            WorkoutPost post =workoutPostRepository.findById(id).orElseThrow(()->new RuntimeException("Workut post not found"));
+
+            if (updatePostRequestDTO.getDescription() != null) {
+                post.setDescription(updatePostRequestDTO.getDescription());
+            }
+            if (updatePostRequestDTO.getTitle() != null) {
+                post.setTitle(updatePostRequestDTO.getTitle());
+            }
+            if (updatePostRequestDTO.getImageUrls() != null && !updatePostRequestDTO.getImageUrls().isEmpty()) {
+                List<String> uploadedImageUrls = new ArrayList<>();
+
+                for (MultipartFile image : updatePostRequestDTO.getImageUrls()) {
+                    String imageUrl = cloudinary.uploader()
+                            .upload(image.getBytes(), Map.of(
+                                    "public_id", UUID.randomUUID().toString(),
+                                    "folder", "WorkoutPosts"))
+                            .get("url")
+                            .toString();
+
+                    uploadedImageUrls.add(imageUrl);
+                }
+                post.setImageUrl(uploadedImageUrls);
+            }
+            workoutPostRepository.save(post);
+        } catch (Exception e) {
+            throw new RuntimeException("Failed to update post with ID: " + id, e);
+        }
+
+
+    }
 
 }
