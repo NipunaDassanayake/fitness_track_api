@@ -1,4 +1,4 @@
-package com.fitness_track_api.fitness_track.model;
+package com.fit_track_api.fit_track_api.model;
 
 import com.fasterxml.jackson.annotation.JsonBackReference;
 import com.fasterxml.jackson.annotation.JsonManagedReference;
@@ -25,20 +25,25 @@ public class User {
     @Column(nullable = false, unique = true)
     private String username;
 
-    private String profilePicture;
-
     @Column(nullable = false, unique = true)
     private String email;
 
-    @Column(nullable = false)
     private String password;
 
-    // User's workout posts
-    @OneToMany(mappedBy = "user")
-    @JsonBackReference
-    private List<WorkoutPost> workoutPosts = new ArrayList<>();
+    @Enumerated(EnumType.STRING)
+    private AuthProvider authProvider;
 
-    // User's saved workout plans
+    // User's workout posts
+    @OneToMany(mappedBy = "user", cascade = CascadeType.ALL)
+    @JsonBackReference
+    private List<com.fit_track_api.fit_track_api.model.WorkoutPost> workoutPosts = new ArrayList<>();
+
+    // Workout plans created by the user
+    @OneToMany(mappedBy = "creator", cascade = CascadeType.ALL)
+    @JsonBackReference
+    private List<WorkoutPlan> workoutPlans = new ArrayList<>();
+
+    // Workout plans saved by the user
     @ManyToMany
     @JoinTable(
             name = "user_saved_plans",
@@ -48,7 +53,7 @@ public class User {
     @JsonManagedReference
     private List<WorkoutPlan> savedPlans = new ArrayList<>();
 
-    // Users that the current user follows
+    // Users followed by this user
     @ManyToMany
     @JoinTable(
             name = "user_followers",
