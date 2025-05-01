@@ -2,14 +2,20 @@ package com.fit_track_api.fit_track_api.service.impl;
 
 import com.cloudinary.Cloudinary;
 import com.fit_track_api.fit_track_api.controller.dto.request.CreateUserRequestDTO;
+import com.fit_track_api.fit_track_api.controller.dto.request.LoginRequestDTO;
 import com.fit_track_api.fit_track_api.controller.dto.request.UserUpdateRequestDTO;
 import com.fit_track_api.fit_track_api.controller.dto.response.GetAllUsersResponseDTO;
 import com.fit_track_api.fit_track_api.controller.dto.response.GetUserByIdResponseDTO;
 import com.fit_track_api.fit_track_api.exceptions.ResourceNotFoundException;
+import com.fit_track_api.fit_track_api.model.AuthProvider;
 import com.fit_track_api.fit_track_api.model.User;
 import com.fit_track_api.fit_track_api.repository.UserRepository;
 import com.fit_track_api.fit_track_api.service.UserService;
 import lombok.AllArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
+import org.springframework.security.crypto.password.PasswordEncoder;
+import org.springframework.security.oauth2.client.authentication.OAuth2AuthenticationToken;
+import org.springframework.security.oauth2.core.user.OAuth2User;
 import org.springframework.stereotype.Service;
 
 import java.io.IOException;
@@ -17,14 +23,14 @@ import java.util.List;
 import java.util.Map;
 import java.util.UUID;
 
+@Slf4j
 @Service
 @AllArgsConstructor
 public class UserServiceImpl implements UserService {
 
     private final UserRepository userRepository;
     private final Cloudinary cloudinary;
-
-//    private final PasswordEncoder passwordEncoder;
+    private final PasswordEncoder passwordEncoder;
 
 
     @Override
@@ -63,25 +69,28 @@ public class UserServiceImpl implements UserService {
             //     user.setPassword(passwordEncoder.encode(userUpdateRequestDTO.getPassword()));
             // }
 
-            if (userUpdateRequestDTO.getProfilePicture() != null && !userUpdateRequestDTO.getProfilePicture().isEmpty()) {
-                try {
-                    String profilePictureUrl = cloudinary.uploader()
-                            .upload(userUpdateRequestDTO.getProfilePicture().getBytes(),
-                                    Map.of("public_id", UUID.randomUUID().toString(),
-                                            "folder", "ProfilePictures"))
-                            .get("url")
-                            .toString();
-                    user.setProfilePicture(profilePictureUrl);
-                } catch (IOException e) {
-                    throw new RuntimeException("Failed to upload profile picture", e);
-                }
-            }
-
-            return userRepository.save(user);
-
+//            if (userUpdateRequestDTO.getProfilePicture() != null && !userUpdateRequestDTO.getProfilePicture().isEmpty()) {
+//                try {
+//                    String profilePictureUrl = cloudinary.uploader()
+//                            .upload(userUpdateRequestDTO.getProfilePicture().getBytes(),
+//                                    Map.of("public_id", UUID.randomUUID().toString(),
+//                                            "folder", "ProfilePictures"))
+//                            .get("url")
+//                            .toString();
+//                    user.setProfilePicture(profilePictureUrl);
+//                } catch (IOException e) {
+//                    throw new RuntimeException("Failed to upload profile picture", e);
+//                }
+//            }
+//
+//            return userRepository.save(user);
+//
+//        } catch (Exception e) {
+//            throw new RuntimeException("Failed to update user with ID: " + id, e);
         } catch (Exception e) {
-            throw new RuntimeException("Failed to update user with ID: " + id, e);
+            throw new RuntimeException(e);
         }
+        return user;
     }
 
 
@@ -94,17 +103,6 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public GetUserByIdResponseDTO getUserById(Long id) {
-        User user = userRepository.findById(id).orElseThrow(() -> new RuntimeException("User not found"));
-
-        GetUserByIdResponseDTO getUserByIdResponseDTO = new GetUserByIdResponseDTO();
-        getUserByIdResponseDTO.setId(user.getId());
-        getUserByIdResponseDTO.setEmail(user.getEmail());
-        getUserByIdResponseDTO.setUsername(user.getUsername());
-    return getUserByIdResponseDTO;
-    }
-
-    @Override
     public User loginUserLocal(LoginRequestDTO loginRequestDTO) {
         User existingUser = userRepository.findByEmail(loginRequestDTO.getEmail()).orElseThrow(()->new RuntimeException("User not found with email : "+loginRequestDTO.getEmail()));
         if(!passwordEncoder.matches(loginRequestDTO.getPassword(), existingUser.getPassword())){
@@ -113,20 +111,6 @@ public class UserServiceImpl implements UserService {
         return existingUser;
     }
 
-    @Override
-    public List<GetAllUsersResponseDTO> getAllUsers() {
-        List<User> users = userRepository.findAll();
-
-        List<GetAllUsersResponseDTO> usersResponseDTOS = users.stream()
-                .map(user -> {
-                    GetAllUsersResponseDTO getAllUsersResponseDTO = new GetAllUsersResponseDTO();
-                    getAllUsersResponseDTO.setId(user.getId());
-                    getAllUsersResponseDTO.setEmail(user.getEmail());
-                    getAllUsersResponseDTO.setUsername(user.getUsername());
-                return getAllUsersResponseDTO;
-                }).toList();
-        return usersResponseDTOS;
-    }
     @Override
     public User loginRegisterByGoogleOAuth2(OAuth2AuthenticationToken auth2AuthenticationToken) {
         OAuth2User oAuth2User = auth2AuthenticationToken.getPrincipal();
@@ -148,6 +132,34 @@ public class UserServiceImpl implements UserService {
         System.out.println("User created/found: Email = " + user.getEmail() + ", Username = " + user.getUsername() + ", AuthProvider = " + user.getAuthProvider());
         return user;
     }
+
+
+    @Override
+    public GetUserByIdResponseDTO getUserById(Long id) {
+        User user = userRepository.findById(id).orElseThrow(() -> new RuntimeException("User not found"));
+
+        GetUserByIdResponseDTO getUserByIdResponseDTO = new GetUserByIdResponseDTO();
+        getUserByIdResponseDTO.setId(user.getId());
+        getUserByIdResponseDTO.setEmail(user.getEmail());
+        getUserByIdResponseDTO.setUsername(user.getUsername());
+        return getUserByIdResponseDTO;
+    }
+
+    @Override
+    public List<GetAllUsersResponseDTO> getAllUsers() {
+        List<User> users = userRepository.findAll();
+
+        List<GetAllUsersResponseDTO> usersResponseDTOS = users.stream()
+                .map(user -> {
+                    GetAllUsersResponseDTO getAllUsersResponseDTO = new GetAllUsersResponseDTO();
+                    getAllUsersResponseDTO.setId(user.getId());
+                    getAllUsersResponseDTO.setEmail(user.getEmail());
+                    getAllUsersResponseDTO.setUsername(user.getUsername());
+                    return getAllUsersResponseDTO;
+                }).toList();
+        return usersResponseDTOS;
+    }
+
     @Override
     public void followUser(Long followerId, Long followedId) {
         if (followerId.equals(followedId)) {
