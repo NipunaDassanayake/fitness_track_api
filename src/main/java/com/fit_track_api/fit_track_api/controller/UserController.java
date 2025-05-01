@@ -1,11 +1,13 @@
 package com.fit_track_api.fit_track_api.controller;
 
 import com.fit_track_api.fit_track_api.controller.dto.request.CreateUserRequestDTO;
+import com.fit_track_api.fit_track_api.controller.dto.request.LoginRequestDTO;
 import com.fit_track_api.fit_track_api.controller.dto.request.UserUpdateRequestDTO;
 import com.fit_track_api.fit_track_api.controller.dto.response.GetAllUsersResponseDTO;
 import com.fit_track_api.fit_track_api.controller.dto.response.GetUserByIdResponseDTO;
 import com.fit_track_api.fit_track_api.model.User;
 import com.fit_track_api.fit_track_api.service.UserService;
+import com.nimbusds.oauth2.sdk.ErrorResponse;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import org.springframework.http.ResponseEntity;
@@ -20,14 +22,6 @@ public class UserController {
 
     private UserService userService;
 
-    @PostMapping
-    public ResponseEntity<String> registerUser(@RequestBody CreateUserRequestDTO createUserRequestDTO){
-        System.out.println(createUserRequestDTO.getPassword());
-        System.out.println(createUserRequestDTO.getUsername());
-        System.out.println(createUserRequestDTO.getEmail());
-        userService.registerUser(createUserRequestDTO);
-       return ResponseEntity.ok("User Created Successfully");
-    }
 
     @PostMapping
     public ResponseEntity<String> registerUser(@RequestBody CreateUserRequestDTO createUserRequestDTO){
@@ -49,16 +43,27 @@ public class UserController {
             return ResponseEntity.badRequest().body(e.getMessage());
         }
     }
+
+
+
     @PutMapping("/{id}")
     public ResponseEntity<String> updateUser(@PathVariable Long id, @ModelAttribute UserUpdateRequestDTO userUpdateRequestDTO) {
-        userService.updateUser(id, userUpdateRequestDTO);
-        return ResponseEntity.ok("User updated successfully");
+        try {
+            userService.updateUser(id, userUpdateRequestDTO);
+            return ResponseEntity.ok("User updated successfully");
+        } catch (RuntimeException e) {
+            return ResponseEntity.badRequest().body("Error: " + e.getMessage());
+        }
     }
 
     @DeleteMapping("/{id}")
-    public ResponseEntity<String> deleteUser(@PathVariable Long id){
-        userService.deleteUser(id);
-        return ResponseEntity.status(200).body("User deleted Successfully");
+    public ResponseEntity<String> deleteUser(@PathVariable Long id) {
+        try {
+            userService.deleteUser(id);
+            return ResponseEntity.status(200).body("User deleted Successfully");
+        } catch (RuntimeException e) {
+            return ResponseEntity.badRequest().body("Error: " + e.getMessage());
+        }
     }
 
     @GetMapping("/{id}")
@@ -97,4 +102,3 @@ public class UserController {
 
 
 }
-
