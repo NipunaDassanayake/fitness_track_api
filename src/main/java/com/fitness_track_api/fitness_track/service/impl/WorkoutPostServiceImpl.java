@@ -109,4 +109,28 @@ public class WorkoutPostServiceImpl implements WorkoutPostService {
 
     }
 
+    @Override
+    public GetPostByIdResponseDTO getPostById(Long id) {
+        WorkoutPost post = workoutPostRepository.findById(id)
+                .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "Post not found"));
+
+        GetPostByIdResponseDTO responseDTO = new GetPostByIdResponseDTO();
+        responseDTO.setTitle(post.getTitle());
+        responseDTO.setDescription(post.getDescription());
+        responseDTO.setImageUrls(post.getImageUrl());
+
+        // Convert likedBy (List<User>) to List<GetUserByIdResponseDTO>
+        List<GetUserByIdResponseDTO> likedByDTOs = post.getLikedBy().stream().map(user -> {
+            GetUserByIdResponseDTO dto = new GetUserByIdResponseDTO();
+            dto.setId(user.getId());
+            dto.setUsername(user.getUsername());
+            dto.setEmail(user.getEmail());
+            return dto;
+        }).collect(Collectors.toList());
+
+        responseDTO.setLikedBy(likedByDTOs);
+
+        return responseDTO;
+    }
+
 }
