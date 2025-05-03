@@ -6,9 +6,11 @@ import com.fit_track_api.fit_track_api.model.WorkoutPlan;
 import com.fit_track_api.fit_track_api.service.WorkoutPlanService;
 import jakarta.validation.Valid;
 import lombok.AllArgsConstructor;
+import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.nio.file.AccessDeniedException;
 import java.util.List;
 
 @RestController
@@ -19,14 +21,15 @@ public class WorkoutPlanController {
     private final WorkoutPlanService workoutPlanService;
 
 
-    @PostMapping("/{userId}")
+    @PostMapping(value = "/{userId}", consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
     public ResponseEntity<WorkoutPlanResponseDTO> createWorkoutPlan(
             @PathVariable Long userId,
-            @Valid @RequestBody CreateWorkoutPlanRequestDTO requestDTO) {
+            @Valid @ModelAttribute CreateWorkoutPlanRequestDTO requestDTO) {
 
         WorkoutPlanResponseDTO responseDTO = workoutPlanService.createPlan(requestDTO, userId);
         return ResponseEntity.ok(responseDTO);
     }
+
 
     @GetMapping
     public ResponseEntity<List<WorkoutPlanResponseDTO>> getAllWorkoutPlans() {
@@ -51,9 +54,21 @@ public class WorkoutPlanController {
 
 
     @DeleteMapping("/{planId}")
-    public ResponseEntity<String> deleteWorkoutPlan(@PathVariable Long planId) {
-        workoutPlanService.deleteWorkoutPlan(planId);
+    public ResponseEntity<String> deleteWorkoutPlan(@PathVariable Long planId, @RequestParam Long userId) throws AccessDeniedException {
+        workoutPlanService.deleteWorkoutPlan(planId, userId);
         return ResponseEntity.ok("Workout plan deleted successfully");
+    }
+
+    @PostMapping("/{workoutPlanId}/like/{userId}")
+    public ResponseEntity<String> likeWorkoutPlan(@PathVariable Long workoutPlanId, @PathVariable Long userId) {
+        workoutPlanService.likeWorkoutPlan(workoutPlanId, userId);
+        return ResponseEntity.ok("Workout plan liked successfully.");
+    }
+
+    @PostMapping("/{workoutPlanId}/unlike/{userId}")
+    public ResponseEntity<String> unlikeWorkoutPlan(@PathVariable Long workoutPlanId, @PathVariable Long userId) {
+        workoutPlanService.unlikeWorkoutPlan(workoutPlanId, userId);
+        return ResponseEntity.ok("Workout plan unliked successfully.");
     }
 
 }
