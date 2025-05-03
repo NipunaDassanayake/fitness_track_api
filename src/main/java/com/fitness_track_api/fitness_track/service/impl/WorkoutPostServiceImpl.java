@@ -133,4 +133,35 @@ public class WorkoutPostServiceImpl implements WorkoutPostService {
         return responseDTO;
     }
 
+
+    @Override
+    public List<GetPostByUserResponseDTO> getPostsByUser(Long userId) {
+        List<WorkoutPost> workoutPosts = workoutPostRepository.findByUserId(userId);
+
+        if (workoutPosts.isEmpty()) {
+            throw new RuntimeException("No posts found for this user");
+        }
+
+        List<GetPostByUserResponseDTO> responseList = new ArrayList<>();
+
+        for (WorkoutPost post : workoutPosts) {
+            GetPostByUserResponseDTO dto = new GetPostByUserResponseDTO();
+            dto.setTitle(post.getTitle());
+            dto.setDescription(post.getDescription());
+            dto.setImageUrls(post.getImageUrl());
+
+            // Convert likedBy (List<User>) to List<GetUserByIdResponseDTO>
+            List<GetUserByIdResponseDTO> likedByDTOs = post.getLikedBy().stream().map(user -> {
+                GetUserByIdResponseDTO likedUserDTO = new GetUserByIdResponseDTO();
+                likedUserDTO.setId(user.getId());
+                likedUserDTO.setUsername(user.getUsername());
+                likedUserDTO.setEmail(user.getEmail());
+                return likedUserDTO;
+            }).collect(Collectors.toList());
+
+            dto.setLikedBy(likedByDTOs);
+            responseList.add(dto);
+        }
+
+        return responseList;
 }
