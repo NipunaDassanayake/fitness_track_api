@@ -35,7 +35,6 @@ public class WorkoutPostServiceImpl implements WorkoutPostService {
     private final Cloudinary cloudinary;
 
 
-
     @Override
     public WorkoutPost createPost(CreatePostRequestDTO createPostRequestDTO, Long userId) {
         User user = userRepository.findById(userId)
@@ -70,7 +69,7 @@ public class WorkoutPostServiceImpl implements WorkoutPostService {
     @Override
     public void updatePost(Long id, UpdatePostRequestDTO updatePostRequestDTO) {
         try {
-            WorkoutPost post =workoutPostRepository.findById(id).orElseThrow(()->new RuntimeException("Workut post not found"));
+            WorkoutPost post = workoutPostRepository.findById(id).orElseThrow(() -> new RuntimeException("Workut post not found"));
 
             if (updatePostRequestDTO.getDescription() != null) {
                 post.setDescription(updatePostRequestDTO.getDescription());
@@ -99,7 +98,7 @@ public class WorkoutPostServiceImpl implements WorkoutPostService {
         }
 
         @Override
-        public void deletePost(Long id) {
+        public void deletePost (Long id){
             if (!workoutPostRepository.existsById(id)) {
                 throw new ResourceNotFoundException("Post not found");
             }
@@ -164,4 +163,14 @@ public class WorkoutPostServiceImpl implements WorkoutPostService {
         }
 
         return responseList;
+    }
+
+
+    @Override
+    public List<WorkoutPost> getFeedPosts(User user) {
+        return user.getFollowing().stream()
+                .flatMap(followedUser -> followedUser.getWorkoutPosts().stream())
+                .collect(Collectors.toList());
+    }
+
 }
