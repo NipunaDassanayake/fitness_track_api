@@ -133,6 +133,56 @@ public class AchievementServiceImpl implements AchievementService {
         achievementRepository.delete(achievement);
     }
 
+    @Override
+    public AchievementResponseDTO getAchievementById(Long achievementId) {
+        Achievement achievement = achievementRepository.findById(achievementId)
+                .orElseThrow(() -> new ResourceNotFoundException("Achievement not found with id: " + achievementId));
+
+        AchievementResponseDTO responseDTO = new AchievementResponseDTO();
+        responseDTO.setId(achievement.getId());
+        responseDTO.setTitle(achievement.getTitle());
+        responseDTO.setDescription(achievement.getDescription());
+        responseDTO.setAchievedDate(achievement.getAchievedDate());
+        responseDTO.setLikedCount(achievement.getLikedCount());
+
+        if (achievement.getUser() != null) {
+            responseDTO.setUserId(achievement.getUser().getId());
+            responseDTO.setUsername(achievement.getUser().getUsername());
+        }
+
+        if (achievement.getWorkoutPlan() != null) {
+            responseDTO.setWorkoutPlanId(achievement.getWorkoutPlan().getId());
+            responseDTO.setWorkoutPlanName(achievement.getWorkoutPlan().getName());
+        }
+
+        // Fetch image URLs
+        if (achievement.getImageUrl() != null && !achievement.getImageUrl().isEmpty()) {
+            responseDTO.setImageUrls(achievement.getImageUrl());
+        }
+
+        // Fetch video URL
+        if (achievement.getVideoUrl() != null) {
+            responseDTO.setVideoUrl(achievement.getVideoUrl());
+        }
+
+        return responseDTO;
+    }
+
+    @Transactional
+    @Override
+    public void likeAchievement(Long achievementId, Long userId) {
+        Achievement achievement = achievementRepository.findById(achievementId)
+                .orElseThrow(() -> new RuntimeException("achievement not found"));
+
+        User user = userRepository.findById(userId)
+                .orElseThrow(() -> new RuntimeException("User not found"));
+
+        if (!achievement.getLikedBy().contains(user)) {
+            achievement.getLikedBy().add(user);
+            achievement.setLikedCount(achievement.getLikedBy().size());
+            achievementRepository.save(achievement);
+        }
+    }
 
 
 
