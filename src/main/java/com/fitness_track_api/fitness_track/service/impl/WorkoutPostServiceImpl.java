@@ -173,4 +173,10 @@ public class WorkoutPostServiceImpl implements WorkoutPostService {
                 .collect(Collectors.toList());
     }
 
+    @Override
+    public List<WorkoutPost> getAllPosts() {
+        return workoutPostRepository.findAllByOrderByCreatedAtDesc();
+    }
+
+
 }
