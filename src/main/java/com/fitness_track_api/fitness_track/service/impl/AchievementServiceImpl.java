@@ -183,7 +183,52 @@ public class AchievementServiceImpl implements AchievementService {
             achievementRepository.save(achievement);
         }
     }
+    @Transactional
+    @Override
+    public void unlikeAchievement(Long achievementId, Long userId) {
+        Achievement achievement = achievementRepository.findById(achievementId)
+                .orElseThrow(() -> new RuntimeException("achievement not found"));
 
+        User user = userRepository.findById(userId)
+                .orElseThrow(() -> new RuntimeException("User not found"));
+
+        if (achievement.getLikedBy().contains(user)) {
+            achievement.getLikedBy().remove(user);
+            achievement.setLikedCount(achievement.getLikedBy().size());
+            achievementRepository.save(achievement);
+        }
+    }
+
+    @Override
+    public List<AchievementResponseDTO> getAllAchievements() {
+        List<Achievement> achievements = achievementRepository.findAll();
+        List<AchievementResponseDTO> responseList = new ArrayList<>();
+
+        for (Achievement achievement : achievements) {
+            AchievementResponseDTO dto = new AchievementResponseDTO();
+            dto.setId(achievement.getId());
+            dto.setTitle(achievement.getTitle());
+            dto.setDescription(achievement.getDescription());
+            dto.setAchievedDate(achievement.getAchievedDate());
+            dto.setImageUrls(achievement.getImageUrl());
+            dto.setVideoUrl(achievement.getVideoUrl());
+            dto.setLikedCount(achievement.getLikedCount());
+
+            if (achievement.getUser() != null) {
+                dto.setUserId(achievement.getUser().getId());
+                dto.setUsername(achievement.getUser().getUsername());
+            }
+
+            if (achievement.getWorkoutPlan() != null) {
+                dto.setWorkoutPlanId(achievement.getWorkoutPlan().getId());
+                dto.setWorkoutPlanName(achievement.getWorkoutPlan().getName());
+            }
+
+            responseList.add(dto);
+        }
+
+        return responseList;
+    }
 
 
 }
