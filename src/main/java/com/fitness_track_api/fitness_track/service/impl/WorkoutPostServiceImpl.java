@@ -179,4 +179,19 @@ public class WorkoutPostServiceImpl implements WorkoutPostService {
     }
 
 
+    @Override
+    @Transactional
+    public void likePost(Long postId, Long userId) {
+        WorkoutPost post = workoutPostRepository.findById(postId)
+                .orElseThrow(() -> new RuntimeException("Post not found"));
+
+        User user = userRepository.findById(userId)
+                .orElseThrow(() -> new RuntimeException("User not found"));
+
+        if (!post.getLikedBy().contains(user)) {
+            post.getLikedBy().add(user);
+            post.setLikedCount(post.getLikedBy().size());
+            workoutPostRepository.save(post);
+        }
+
 }
