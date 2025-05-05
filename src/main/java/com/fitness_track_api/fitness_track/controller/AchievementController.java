@@ -43,6 +43,21 @@ public class AchievementController {
         return ResponseEntity.ok("Achievement updated successfully ");
     }
 
+    @DeleteMapping("/users/{userId}/achievements/{achievementId}")
+    @ResponseStatus(HttpStatus.NO_CONTENT)
+    public void deleteUserAchievement(
+            @PathVariable Long userId,
+            @PathVariable Long achievementId) {
+        achievementService.deleteAchievement(userId, achievementId);
+    }
+
+    @GetMapping("/{achievementId}")
+    public ResponseEntity<AchievementResponseDTO> getAchievementById(
+            @PathVariable Long achievementId) {
+        AchievementResponseDTO achievement = achievementService.getAchievementById(achievementId);
+        return ResponseEntity.ok(achievement);
+    }
+
 
 
 }
