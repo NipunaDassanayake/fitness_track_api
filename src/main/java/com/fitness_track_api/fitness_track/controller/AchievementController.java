@@ -66,5 +66,14 @@ public class AchievementController {
         return ResponseEntity.ok("achievement liked successfully");
     }
 
+    @PostMapping("/{achievementId}/unlike/{userId}")
+    public ResponseEntity<String> unlikePost(
+            @PathVariable Long achievementId,
+            @PathVariable Long userId) {
+        achievementService.unlikeAchievement(achievementId, userId);
+        return ResponseEntity.ok("achievement unliked successfully");
+    }
+
+
 
 }
