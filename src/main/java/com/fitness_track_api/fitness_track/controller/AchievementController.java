@@ -8,7 +8,6 @@ import com.fit_track_api.fit_track_api.model.Achievement;
 import com.fit_track_api.fit_track_api.service.AchievementService;
 import lombok.AllArgsConstructor;
 import org.springframework.http.HttpStatus;
-import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -21,24 +20,21 @@ public class AchievementController {
 
     private final AchievementService achievementService;
 
-    @PostMapping(value = "/share-achievement/{workoutPlanId}", consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
+    @PostMapping("/share-achievement/{workoutPlanId}")
     public ResponseEntity<String> shareAsAchievement(
             @RequestParam Long userId,
             @PathVariable Long workoutPlanId,
-            @ModelAttribute CreateAchievementDTO createAchievementDTO) {
-        try {
-            Achievement achievement = achievementService.shareAchievement(userId, workoutPlanId, createAchievementDTO);
-            return ResponseEntity.ok("User shared an achievement");
-        } catch (RuntimeException e) {
-            return ResponseEntity.badRequest().body("Error: " + e.getMessage());
-        }
+            @RequestBody CreateAchievementDTO createAchievementDTO) {
+        Achievement achievement = achievementService.shareAchievement(
+                userId, workoutPlanId, createAchievementDTO);
+        return ResponseEntity.ok("User Share a Achievement");
     }
-
 
     @PutMapping("/{achievementId}")
     public ResponseEntity<String> updateAchievement(
             @PathVariable Long achievementId,
-            @ModelAttribute UpdateAchievementDTO updateAchievementDTO) {
+            @RequestBody UpdateAchievementDTO updateAchievementDTO) {
+        System.out.println(updateAchievementDTO.getDescription());
         Achievement updatedAchievement = achievementService.updateAchievement(achievementId, updateAchievementDTO);
         return ResponseEntity.ok("Achievement updated successfully ");
     }
@@ -57,27 +53,4 @@ public class AchievementController {
         AchievementResponseDTO achievement = achievementService.getAchievementById(achievementId);
         return ResponseEntity.ok(achievement);
     }
-
-    @PostMapping("/{achievementId}/like/{userId}")
-    public ResponseEntity<String> likePost(
-            @PathVariable Long achievementId,
-            @PathVariable Long userId) {
-        achievementService.likeAchievement(achievementId, userId);
-        return ResponseEntity.ok("achievement liked successfully");
-    }
-
-    @PostMapping("/{achievementId}/unlike/{userId}")
-    public ResponseEntity<String> unlikePost(
-            @PathVariable Long achievementId,
-            @PathVariable Long userId) {
-        achievementService.unlikeAchievement(achievementId, userId);
-        return ResponseEntity.ok("achievement unliked successfully");
-    }
-
-    @GetMapping
-    public ResponseEntity<List<AchievementResponseDTO>> getAllAchievements() {
-        List<AchievementResponseDTO> achievements = achievementService.getAllAchievements();
-        return ResponseEntity.ok(achievements);
-    }
-
 }
