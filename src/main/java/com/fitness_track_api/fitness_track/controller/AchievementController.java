@@ -58,6 +58,13 @@ public class AchievementController {
         return ResponseEntity.ok(achievement);
     }
 
+    @PostMapping("/{achievementId}/like/{userId}")
+    public ResponseEntity<String> likePost(
+            @PathVariable Long achievementId,
+            @PathVariable Long userId) {
+        achievementService.likeAchievement(achievementId, userId);
+        return ResponseEntity.ok("achievement liked successfully");
+    }
 
 
 }
