@@ -26,7 +26,12 @@ public class CommentController {
         return ResponseEntity.ok("Comment added successfully");
     }
 
+    @PutMapping("/{commentId}")
+    public ResponseEntity<Comment> updateComment(@PathVariable Long achievementId, @RequestParam String newContent){
+        Comment updatedComment = commentService.updateComment(achievementId, newContent);
+        return ResponseEntity.ok(updatedComment);
 
+    }
 
 
 }
