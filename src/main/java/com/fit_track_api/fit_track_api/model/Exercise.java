@@ -23,7 +23,7 @@ public class Exercise {
 
 
     @Column(name = "exercise_order", nullable = false)
-    private Integer order;
+    private String order;
 
 
     @ManyToOne(fetch = FetchType.LAZY)
