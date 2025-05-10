@@ -16,7 +16,7 @@ public class CreateExerciseRequestDTO {
     private String description;
 
     @NotNull(message = "Order is required")
-    private Integer order;
+    private String order;
 
     private MultipartFile image; // For a single image
 }
