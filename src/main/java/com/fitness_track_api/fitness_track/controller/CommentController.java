@@ -37,7 +37,11 @@ public class CommentController {
         commentService.deleteComment(commentId,userId);
         return ResponseEntity.noContent().build();
     }
-
+    @GetMapping("/achievement/{achievementId}")
+    public ResponseEntity<List<GetCommentResponseDTO>> getCommentsByAchievement(@PathVariable Long achievementId){
+        List<GetCommentResponseDTO> comments = commentService.getCommentsByAchievement(achievementId);
+        return ResponseEntity.ok(comments);
+    }
 
 
 }
