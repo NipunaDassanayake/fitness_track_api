@@ -46,6 +46,16 @@ public class CommentServiceImpl implements CommentService {
         return commentRepository.save(comment);
     }
 
+    @Override
+    public void deleteComment(Long commentId , Long userId) {
+        Comment comment = commentRepository.findById(commentId).orElseThrow(()->new RuntimeException("Comment not found with id: " + commentId));
+
+        if (!comment.getUser().getId().equals(userId)) {
+            throw new RuntimeException("You are not authorized to delete this comment.");
+        }
+        commentRepository.deleteById(commentId);
+    }
+
 
 
 
