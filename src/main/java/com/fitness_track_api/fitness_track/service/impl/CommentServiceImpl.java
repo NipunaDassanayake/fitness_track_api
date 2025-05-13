@@ -56,7 +56,22 @@ public class CommentServiceImpl implements CommentService {
         commentRepository.deleteById(commentId);
     }
 
-
+    @Override
+    public List<GetCommentResponseDTO> getCommentsByAchievement(Long achievementId) {
+        List<Comment> comments = commentRepository.findByAchievementId(achievementId);
+        return comments.stream()
+                .map(comment -> {
+                    GetCommentResponseDTO dto = new GetCommentResponseDTO();
+                    dto.setId(comment.getId());
+                    dto.setContent(comment.getContent());
+                    dto.setCreatedAt(comment.getCreatedAt());
+                    dto.setUserId(comment.getUser().getId());
+                    dto.setUsername(comment.getUser().getUsername());
+                    dto.setAchievementId(comment.getAchievement().getId());
+                    return dto;
+                })
+                .collect(Collectors.toList());
+    }
 
 
 }
