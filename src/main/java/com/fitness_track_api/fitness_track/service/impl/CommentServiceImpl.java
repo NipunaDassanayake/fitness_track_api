@@ -37,6 +37,15 @@ public class CommentServiceImpl implements CommentService {
 
         return commentRepository.save(comment);
     }
+    @Override
+    public Comment updateComment(Long commentId, String newContent) {
+        Comment comment = commentRepository.findById(commentId)
+                .orElseThrow(() -> new RuntimeException("Comment not found with id: " + commentId));
+
+        comment.setContent(newContent);
+        return commentRepository.save(comment);
+    }
+
 
 
 
