@@ -1,6 +1,7 @@
 package com.fit_track_api.fit_track_api.service.impl;
 
 import com.cloudinary.Cloudinary;
+import com.fit_track_api.fit_track_api.model.User;
 import com.fitness_track_api.fitness_track.controller.dto.request.CreateUserRequestDTO;
 import com.fitness_track_api.fitness_track.controller.dto.request.UserUpdateRequestDTO;
 import com.fitness_track_api.fitness_track.controller.dto.response.GetAllUsersResponseDTO;
@@ -101,6 +102,15 @@ public class UserServiceImpl implements UserService {
         getUserByIdResponseDTO.setEmail(user.getEmail());
         getUserByIdResponseDTO.setUsername(user.getUsername());
     return getUserByIdResponseDTO;
+    }
+
+    @Override
+    public User loginUserLocal(LoginRequestDTO loginRequestDTO) {
+        User existingUser = userRepository.findByEmail(loginRequestDTO.getEmail()).orElseThrow(()->new RuntimeException("User not found with email : "+loginRequestDTO.getEmail()));
+        if(!passwordEncoder.matches(loginRequestDTO.getPassword(), existingUser.getPassword())){
+            throw new RuntimeException("Invalid Username or password");
+        }
+        return existingUser;
     }
 
     @Override
