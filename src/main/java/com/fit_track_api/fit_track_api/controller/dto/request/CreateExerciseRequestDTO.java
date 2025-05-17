@@ -4,6 +4,7 @@ import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Size;
 import lombok.Data;
+import org.springframework.web.multipart.MultipartFile;
 
 @Data
 public class CreateExerciseRequestDTO {
@@ -15,5 +16,7 @@ public class CreateExerciseRequestDTO {
     private String description;
 
     @NotNull(message = "Order is required")
-    private Integer order;
+    private String order;
+
+    private MultipartFile image; // For a single image
 }
