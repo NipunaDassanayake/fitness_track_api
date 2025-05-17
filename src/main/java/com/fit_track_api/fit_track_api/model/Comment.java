@@ -1,12 +1,15 @@
-package com.fit_track_api.fit_track_api.model;
+package com.fitness_track_api.fitness_track.model;
 
+import com.fasterxml.jackson.annotation.JsonManagedReference;
 import jakarta.persistence.*;
-import lombok.Data;
+import lombok.Getter;
+import lombok.Setter;
 
 import java.time.LocalDateTime;
 
 @Entity
-@Data
+@Getter
+@Setter
 public class Comment {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -21,7 +24,8 @@ public class Comment {
     @JoinColumn(name = "user_id", nullable = false)
     private User user;
 
-    @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "post_id", nullable = false)
-    private WorkoutPost post;
+    @ManyToOne
+    @JsonManagedReference
+    @JoinColumn(name = "achievement_id")
+    private com.fit_track_api.fit_track_api.model.Achievement achievement;
 }
