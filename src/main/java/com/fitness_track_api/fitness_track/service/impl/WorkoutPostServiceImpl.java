@@ -208,5 +208,5 @@ public class WorkoutPostServiceImpl implements WorkoutPostService {
                 post.getLikedBy().remove(user);
                 post.setLikedCount(post.getLikedBy().size());
                 workoutPostRepository.save(post);
-            }
+            }git add .
 }
